@@ -1,6 +1,8 @@
 # Arbor simulation of the induction of early- and late-phase plasticity at a single synapse
 
 This code simulates a current-based, plastic synapse that connects two leaky integrate-and-fire neurons.
+
+It requires Arbor v0.5.2 of commit [ea25d7a](https://github.com/arbor-sim/arbor/commit/ea25d7aa3546b19126d4ef82b92a9ea29d6695a1) and later (to support the sparse solver for non-linear systems that are not kinetic schemes).
  
  The following protocols are provided and can be run by the bash scripts of the same name:
  * "run\_arbor\_basic\_early": demonstrates the simulation of basic calcium and early-phase plasticity dynamics. The presynaptic neuron spikes at predefined times and thereby stimulates the postsynaptic site and induces plasticity.
