@@ -1,0 +1,39 @@
+{
+	"simulation" : {
+		"dt" : 0.2
+	},
+	"neuron" : {
+		"mechanism" : "lif",
+		"V_init" : -65.0,
+		"V_rev" : -65.0,
+		"V_reset" : -70.0,
+		"V_th" : -55.0,
+		"R_leak" : 10.0,
+		"R_reset" : 1e-10,
+		"C_mem" : 1e-9,
+		"I_0" : 0,
+		"t_ref" : 2.0,
+		"radius" : 1e-10
+	},
+	"synapses" : {
+		"syn_exc_calcium_plasticity" : {
+			"h_0" : 4.20075,
+			"tau_syn" : 5.0,
+			"t_ax_delay" : 3.0,
+			"t_Ca_delay" : 18.8,
+			"Ca_pre" : 1.0,
+			"Ca_post" : 0.2758,
+			"theta_p" : 3.0,
+			"theta_d" : 1.2,
+			"theta_pro" : 2.10037,
+			"theta_tag" : 0.840149
+		},
+		"syn_exc_input1" : {
+			"stimulus_times" : [ 10, 20, 30, 40, 50, 60, 100 ]
+		},
+		"syn_exc_input0" : {
+			"stimulus_times" : [  ]
+		}
+	}
+}
+

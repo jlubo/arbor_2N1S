@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# set environment variables required to run custom Arbor installation
+source set_arbor_env
+
+# run the simulation
+python3 ./arbor2N1S.py -learn=predef -runtime=200 -data_saving=0

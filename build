@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# set environment variables required to run custom Arbor installation
+source set_arbor_env
+
+# ask for confirmation because there may have been changes in temporary C++ code
+echo "Rebuild for real (y/n)?"
+read answer
+
+# run the build script/modcc
+if [[ $answer == "y" ]]; then
+	echo "Building..."
+	build-catalogue custom mechanisms
+else
+	echo "Build canceled."
+fi

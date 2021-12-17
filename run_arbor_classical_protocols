@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# set environment variables required to run custom Arbor installation
+source set_arbor_env
+
+# number of trials to be used for the reproduction of classical plasticity induction protocols
+num_trials=100
+
+# runs simulations with strong tetanic stimulation
+for (( i=1; i <= $num_trials; ++i ))
+do
+    python3 ./arbor2N1S.py -learn=STET -trial=$i -runtime=28800000 -data_saving=1
+done
+
+# runs simulations with weak tetanic stimulation
+for (( i=1; i <= $num_trials; ++i ))
+do
+    python3 ./arbor2N1S.py -learn=WTET -trial=$i -runtime=28800000 -data_saving=1
+done
+
+# runs simulations with strong low-frequency stimulation
+for (( i=1; i <= $num_trials; ++i ))
+do
+    python3 ./arbor2N1S.py -learn=SLFS -trial=$i -runtime=28800000 -data_saving=1
+done
+
+# runs simulations with weak low-frequency stimulation
+for (( i=1; i <= $num_trials; ++i ))
+do
+    python3 ./arbor2N1S.py -learn=WLFS -trial=$i -runtime=28800000 -data_saving=1
+done
+
+# average over trials
+python3 averageFileColumnsAdvanced.py
+
+# plot averaged data in png format with all existing samples
+python3 plotAveragedResults.py -protocol=STET -out_format=png -sampling=1
+python3 plotAveragedResults.py -protocol=WTET -out_format=png -sampling=1
+python3 plotAveragedResults.py -protocol=SLFS -out_format=png -sampling=1
+python3 plotAveragedResults.py -protocol=WLFS -out_format=png -sampling=1
+
+# plot averaged data in svg format with every 100th sample
+python3 plotAveragedResults.py -protocol=STET -out_format=svg -sampling=100
+python3 plotAveragedResults.py -protocol=WTET -out_format=svg -sampling=100
+python3 plotAveragedResults.py -protocol=SLFS -out_format=svg -sampling=100
+python3 plotAveragedResults.py -protocol=WLFS -out_format=svg -sampling=100

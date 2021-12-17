@@ -1,0 +1,8 @@
+*.svg
+*.png
+*.txt
+*.so
+*.bak
+tmp/
+*pycache*/
+data*/

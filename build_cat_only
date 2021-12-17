@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd tmp/build
+make
+rsync -a custom-catalogue.so ../../
+cd ../..
