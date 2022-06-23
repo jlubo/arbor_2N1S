@@ -1,4 +1,5 @@
-: Exponential, current-based, synapse with calcium-based early-phase plasticity and synaptic tagging and capture
+: Exponential, current-based, synapse with early-phase plasticity based on calcium dynamics
+: and late-phase plasticity based on synaptic tagging and capture
 
 NEURON {
 	POINT_PROCESS expsyn_curr_calcium_plasticity
@@ -44,7 +45,6 @@ STATE {
 }
 
 INITIAL {
-	I = 0
 	g = 0
 	w = h_0
 	h = h_0
@@ -55,27 +55,32 @@ INITIAL {
 
 BREAKPOINT {
 	:SOLVE state METHOD cnexp : solver not compatible with late-phase equation
-	SOLVE state METHOD sparse
+	:SOLVE state METHOD sparse
+	SOLVE state METHOD stochastic
 	
 	w = h + z*h_0
 	I = -g / R_mem
+}
+
+WHITE_NOISE {
+    zeta
 }
 
 DERIVATIVE state {
 	LOCAL xi
 	
 	: Exponential decay of postsynaptic potential
-	g' = -g/tau_syn
+	g' = -g / tau_syn
 	
 	: Early-phase dynamics
-	xi = ( tau_h * (heaviside(Ca - theta_p) + heaviside(Ca - theta_d)) )^(1/2) * sigma_pl
+	xi = ( tau_h * (heaviside(Ca - theta_p) + heaviside(Ca - theta_d)) )^(1/2) * sigma_pl * zeta
 	h' = ( 0.1 * (h_0 - h) + gamma_p * (10-h) * heaviside(Ca - theta_p) - gamma_d * h * heaviside(Ca - theta_d) + xi ) / tau_h
 	
 	: Late-phase dynamics
 	z' = ( p * (1 - z) * heaviside( (h-h_0) - theta_tag ) - p * (z + 0.5) * heaviside( (h_0-h) - theta_tag ) ) / tau_z
 		
-	: Protein dynamics
-	p' = ( -p + alpha * heaviside( abs(h-h_0) - theta_pro ) ) / tau_p
+	: Protein dynamics :TODO SUM!!!
+	p' = ( -p + alpha * heaviside( abs(h-h_0) - theta_pro ) ) / tau_p 
 	
 	: Exponential decay of calcium concentration
 	Ca' = -Ca/tau_Ca

@@ -34,8 +34,9 @@ class SingleRecipe(arbor.recipe):
 		self.the_props = arbor.neuron_cable_properties() # initialize the cell properties to match Neuron's defaults 
 		                                                 # (cf. https://docs.arbor-sim.org/en/v0.5.2/tutorial single_cell_recipe.html)	
 		
-		self.the_cat = arbor.load_catalogue("./custom-catalogue.so") # load the catalogue of custom mechanisms
-		self.the_cat.extend(arbor.default_catalogue(), "") # add the default catalogue
+		the_cat = arbor.load_catalogue("./custom-catalogue.so") # load the catalogue of custom mechanisms
+		the_cat.extend(arbor.default_catalogue(), "") # add the default catalogue
+		self.the_props.catalogue = the_cat
 		  
 		self.the_probes = [arbor.cable_probe_membrane_voltage('"center"'), \
 		                   arbor.cable_probe_total_ion_current_density('"center"'), \
@@ -44,8 +45,6 @@ class SingleRecipe(arbor.recipe):
 		                   arbor.cable_probe_point_state_cell("expsyn_curr_calcium_plasticity", "h"), \
 		                   arbor.cable_probe_point_state_cell("expsyn_curr_calcium_plasticity", "z"), \
 		                   arbor.cable_probe_point_state_cell("expsyn_curr_calcium_plasticity", "p")] # set the probes 
-  
-		self.the_props.register(self.the_cat) # set the properties
 
 		self.neuron_config = config["neuron"]
 		self.syn_config_exc = config["synapses"]["syn_exc_calcium_plasticity"]
@@ -96,7 +95,7 @@ class SingleRecipe(arbor.recipe):
 		neuron.set("I_0", self.neuron_config["I_0"])
 		neuron.set("i_factor", i_factor)
 		neuron.set("t_ref", self.neuron_config["t_ref"])
-		decor.paint('(all)', neuron)
+		decor.paint('(all)', arbor.density(neuron))
 			
 		if gid == 0:
 			# output information
@@ -116,12 +115,12 @@ class SingleRecipe(arbor.recipe):
 			mech_expsyn_exc.set('theta_d', self.syn_config_exc["theta_d"])
 			mech_expsyn_exc.set('theta_pro', self.syn_config_exc["theta_pro"])
 			mech_expsyn_exc.set('theta_tag', self.syn_config_exc["theta_tag"])
-			decor.place('"center"', mech_expsyn_exc, "syn_exc_calcium_plasticity")
+			decor.place('"center"', arbor.synapse(mech_expsyn_exc), "syn_exc_calcium_plasticity")
 			
 			# additional excitatory delta synapse
 			mech_deltasyn_exc = arbor.mechanism('deltasyn')
 			mech_deltasyn_exc.set('g_spike', 100*(V_th-V_reset)*np.exp(self.dt/tau_mem)) # choose sufficently large increase in conductance
-			decor.place('"center"', mech_deltasyn_exc, "syn_exc_input0")
+			decor.place('"center"', arbor.synapse(mech_deltasyn_exc), "syn_exc_input0")
 			
 			# place spike detector
 			decor.place('"center"', arbor.spike_detector(V_th), "spike_detector0")
@@ -130,7 +129,7 @@ class SingleRecipe(arbor.recipe):
 			# excitatory delta synapse
 			mech_deltasyn_exc = arbor.mechanism('deltasyn')
 			mech_deltasyn_exc.set('g_spike', 100*(V_th-V_reset)*np.exp(self.dt/tau_mem)) # choose sufficently large increase in conductance
-			decor.place('"center"', mech_deltasyn_exc, "syn_exc_input1")
+			decor.place('"center"', arbor.synapse(mech_deltasyn_exc), "syn_exc_input1")
 			
 			# place spike detector
 			decor.place('"center"', arbor.spike_detector(V_th), "spike_detector1")
@@ -143,12 +142,11 @@ class SingleRecipe(arbor.recipe):
 	def connections_on(self, gid):
 		
 		if gid == 0: # add connection from neuron 1 to neuron 0
-			#w = 0.01 # weight of the connection that is conveyed to NET_RECEIVE() - irrelevant - is stored in the mechanism
 			src = 1 # gid of the source neuron
 			d0 = self.syn_config_exc["t_ax_delay"] # delay time of the postsynaptic potential in ms
 			d1 = self.syn_config_exc["t_Ca_delay"] # delay time of the calcium increase in ms
 			return [arbor.connection((src,"spike_detector1"), "syn_exc_calcium_plasticity", 1, d0), \
-			        arbor.connection((src,"spike_detector1"), "syn_exc_calcium_plasticity", -1, d1)]
+			        arbor.connection((src,"spike_detector1"), "syn_exc_calcium_plasticity", -1, d1)] # the weight argument is used to indicate which dynamics is targeted (>=0: voltage, <0: calcium)
 		else:
 			return []
 	

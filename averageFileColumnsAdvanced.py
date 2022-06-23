@@ -128,6 +128,6 @@ def averageFileColumns(outname, rootpath, protocol, suffix, columns, first_colum
 ## average weight over time traces for standard plasticity-inducing protocols STET, WTET; SLFS; WLFS:
 averageFileColumns('averaged_STET', '.', 'data_STET', '_traces.txt', [2, 3, 4], comment_line=False, col_sep=' ')
 averageFileColumns('averaged_WTET', '.', 'data_WTET', '_traces.txt', [2, 3, 4], comment_line=False, col_sep=' ')
-averageFileColumns('averaged_SLFS', '.', 'data_SLFS', '_traces.txt', [2, 3, 4], comment_line=False, col_sep=' ')
-averageFileColumns('averaged_WLFS', '.', 'data_WLFS', '_traces.txt', [2, 3, 4], comment_line=False, col_sep=' ')
+#averageFileColumns('averaged_SLFS', '.', 'data_SLFS', '_traces.txt', [2, 3, 4], comment_line=False, col_sep=' ')
+#averageFileColumns('averaged_WLFS', '.', 'data_WLFS', '_traces.txt', [2, 3, 4], comment_line=False, col_sep=' ')
 

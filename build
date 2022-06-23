@@ -10,7 +10,8 @@ read answer
 # run the build script/modcc
 if [[ $answer == "y" ]]; then
 	echo "Building..."
-	build-catalogue custom mechanisms
+	rm -R -f ./tmp
+	arbor-build-catalogue custom mechanisms --debug "./tmp"
 else
 	echo "Build canceled."
 fi

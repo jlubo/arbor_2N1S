@@ -6,3 +6,4 @@
 tmp/
 *pycache*/
 data*/
+run_arbor_classical_protocols_*TET

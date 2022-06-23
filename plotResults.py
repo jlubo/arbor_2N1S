@@ -39,7 +39,7 @@ def plotResults(config, data_stacked, trial = 0, mem_dyn_data = False, store_pat
 	axes[0].axhline(y=(config["synapses"]["syn_exc_calcium_plasticity"]["theta_tag"]/h_0+1)*100, label='Tag thresh.', linestyle='dashed', color="#dddddd", zorder=4)
 	
 	# create legend for plasticity dynamics
-	axes[0].legend()
+	axes[0].legend(loc='upper right')
 
 	if mem_dyn_data:
 		# set axis labels for membrane potential and current plots
@@ -55,7 +55,7 @@ def plotResults(config, data_stacked, trial = 0, mem_dyn_data = False, store_pat
 		# create common legend for axes[1] and ax1twin
 		handles, labels = axes[1].get_legend_handles_labels()
 		handles_twin, labels_twin = ax1twin.get_legend_handles_labels()
-		axes[1].legend(handles + handles_twin, labels + labels_twin)
+		axes[1].legend(handles + handles_twin, labels + labels_twin, loc='upper right')
 
 	# set axis labels for calcium and protein plots
 	axes[num_rows-1].set_xlabel("Time (ms)")
@@ -68,7 +68,7 @@ def plotResults(config, data_stacked, trial = 0, mem_dyn_data = False, store_pat
 	axes[num_rows-1].axhline(y=config["synapses"]["syn_exc_calcium_plasticity"]["theta_d"], label='LTD thresh.', linestyle='dashed', color="#969696", zorder=7)
 	
 	# create legend for calcium and protein plots
-	axes[num_rows-1].legend()
+	axes[num_rows-1].legend(loc='upper right')
 	
 	# save figure in given format (e.g., 'png' or 'svg')
 	fig.savefig(os.path.join(store_path, 'arbor_2N1S_traces_' + str(trial) + '.' + figure_fmt))	
