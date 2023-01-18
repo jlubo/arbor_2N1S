@@ -3,7 +3,7 @@
 
 NEURON {
 	POINT_PROCESS expsyn_curr_calcium_plasticity
-	RANGE h_0, tau_syn, Ca_pre, Ca_post, theta_p, theta_d, theta_pro, theta_tag, R_mem
+	RANGE h_0, tau_syn, Ca_pre, Ca_post, theta_p, theta_d, theta_pro, theta_tag, R_mem, sigma_pl
 	NONSPECIFIC_CURRENT I
 }
 
@@ -79,7 +79,7 @@ DERIVATIVE state {
 	: Late-phase dynamics
 	z' = ( p * (1 - z) * heaviside( (h-h_0) - theta_tag ) - p * (z + 0.5) * heaviside( (h_0-h) - theta_tag ) ) / tau_z
 		
-	: Protein dynamics :TODO SUM!!!
+	: Protein dynamics
 	p' = ( -p + alpha * heaviside( abs(h-h_0) - theta_pro ) ) / tau_p 
 	
 	: Exponential decay of calcium concentration

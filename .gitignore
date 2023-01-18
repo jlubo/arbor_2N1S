@@ -1,9 +1,9 @@
-*.svg
 *.png
 *.txt
 *.so
 *.bak
 tmp/
 *pycache*/
-data*/
+data*/*
+!data_predef*/*.svg
 run_arbor_classical_protocols_*TET

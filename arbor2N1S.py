@@ -115,6 +115,8 @@ class SingleRecipe(arbor.recipe):
 			mech_expsyn_exc.set('theta_d', self.syn_config_exc["theta_d"])
 			mech_expsyn_exc.set('theta_pro', self.syn_config_exc["theta_pro"])
 			mech_expsyn_exc.set('theta_tag', self.syn_config_exc["theta_tag"])
+			if self.learn_prot == "predef_no_pl_noise":
+				mech_expsyn_exc.set('sigma_pl', 0) # switch off noise in plasticity
 			decor.place('"center"', arbor.synapse(mech_expsyn_exc), "syn_exc_calcium_plasticity")
 			
 			# additional excitatory delta synapse
@@ -123,7 +125,7 @@ class SingleRecipe(arbor.recipe):
 			decor.place('"center"', arbor.synapse(mech_deltasyn_exc), "syn_exc_input0")
 			
 			# place spike detector
-			decor.place('"center"', arbor.spike_detector(V_th), "spike_detector0")
+			decor.place('"center"', arbor.threshold_detector(V_th), "spike_detector0")
 			
 		elif gid == 1:
 			# excitatory delta synapse
@@ -132,9 +134,9 @@ class SingleRecipe(arbor.recipe):
 			decor.place('"center"', arbor.synapse(mech_deltasyn_exc), "syn_exc_input1")
 			
 			# place spike detector
-			decor.place('"center"', arbor.spike_detector(V_th), "spike_detector1")
+			decor.place('"center"', arbor.threshold_detector(V_th), "spike_detector1")
 			
-		return arbor.cable_cell(tree, labels, decor)
+		return arbor.cable_cell(tree, decor, labels)
 		
 	# connections_on
 	# gid: global identifier of the cell
@@ -283,7 +285,8 @@ class SingleRecipe(arbor.recipe):
 def arbor2N1S(trial, learn_prot, runtime, config_file, data_saving):
 	
 	#####################################
-	# start taking the time
+	# print Arbor version and start taking the time
+	print("Arbor version " + str(arbor.__version__))
 	t0 = time.time()
 
 	#####################################
@@ -292,12 +295,15 @@ def arbor2N1S(trial, learn_prot, runtime, config_file, data_saving):
 	delta_t = config["simulation"]["dt"]	
 	recipe = SingleRecipe(config, learn_prot, delta_t)
 
-	clockseed = int(t0*10000)
-	print("Random seed " + str(clockseed))
+	if "predef" in learn_prot:
+		rseed = 0 # deterministic
+	else:
+		rseed = int(t0*10000) # clock seed
+	print("Random seed " + str(rseed))
 
 	context = arbor.context() # constructs a local context with one thread, no GPU, no MPI (cf. https://docs.arbor-sim.org/en/v0.5.2/python/hardware.html#arbor.context)
 	domains = arbor.partition_load_balance(recipe, context) # constructs a domain_decomposition that distributes the cells in the model described by an arbor.recipe over the distributed and local hardware resources described by an arbor.context (cf. https://docs.arbor-sim.org/en/v0.5.2/python/domdec.html#arbor.partition_load_balance)
-	sim = arbor.simulation(recipe, context, domains, seed = clockseed)
+	sim = arbor.simulation(recipe, context, domains, seed = rseed)
 
 	sim.record(arbor.spike_recording.all)
 	
