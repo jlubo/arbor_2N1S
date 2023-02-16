@@ -2,6 +2,7 @@
 *.txt
 *.so
 *.bak
+*.svg
 tmp/
 *pycache*/
 data*/*

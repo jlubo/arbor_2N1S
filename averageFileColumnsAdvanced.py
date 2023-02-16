@@ -52,7 +52,7 @@ def averageFileColumns(outname, rootpath, protocol, req_contains, req_suffix, co
 		subpaths_list = []
 		for x in subrawpaths.iterdir():
 			filename = str(x)
-			if (req_suffix in filename and filename.find(suffix) >= len(filename)-len(suffix)) or req_suffix == "": # check if suffix matches
+			if (req_suffix in filename and filename.find(req_suffix) >= len(filename)-len(req_suffix)) or req_suffix == "": # check if suffix matches
 				use = True
 				for req_str in req_contains: # loop over all requested strings
 					if not req_str in filename:  # check if filename does not contain string
@@ -62,7 +62,7 @@ def averageFileColumns(outname, rootpath, protocol, req_contains, req_suffix, co
 		subpaths = np.sort(np.array(subpaths_list))
 		
 		if subpaths.size == 0:
-			raise FileNotFoundError("No files found matching '*" + suffix + "' in '" + paths[i] + "'.")
+			raise FileNotFoundError("No files found matching '*" + req_suffix + "' in '" + paths[i] + "'.")
 
 		print("Found", len(subpaths), "matching file" + ("s" if len(subpaths) > 1 else "") + " in '" + paths[i] + "':\n", subpaths)
 		sample_number += subpaths.size

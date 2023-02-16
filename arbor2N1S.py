@@ -341,12 +341,13 @@ def arbor2N1S(trial, learn_prot, runtime, config_file, data_saving):
 
 	#####################################
 	# assemble and store data
+	h_0 = recipe.syn_config_exc["h_0"]
 	if not data_saving:
 		data_stacked = np.column_stack(
-		      [data_mem[:, 0], data_mem[:, 1], np.negative(data_curr[:, 1]), data_h[:, 1], data_z[:, 1], data_Ca[:, 1], data_p[:, 1]])
+		      [data_mem[:, 0], data_mem[:, 1], np.negative(data_curr[:, 1]), data_h[:, 1], h_0*data_z[:, 1], data_Ca[:, 1], data_p[:, 1]])
 	else:
 		data_stacked = np.column_stack(
-	              [data_h[:, 0], data_h[:, 1], data_z[:, 1], data_Ca[:, 1], data_p[:, 1]])
+	              [data_h[:, 0], data_h[:, 1], h_0*data_z[:, 1], data_Ca[:, 1], data_p[:, 1]])
 	
 	spike_times = np.array([])
 	for s in sim.spikes():

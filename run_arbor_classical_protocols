@@ -40,7 +40,7 @@ python3 plotAveragedResults.py -protocol=SLFS -out_format=png -sampling=1
 python3 plotAveragedResults.py -protocol=WLFS -out_format=png -sampling=1
 
 # plot averaged data in svg format with every 100th sample
-python3 plotAveragedResults.py -protocol=STET -out_format=svg -sampling=100
-python3 plotAveragedResults.py -protocol=WTET -out_format=svg -sampling=100
-python3 plotAveragedResults.py -protocol=SLFS -out_format=svg -sampling=100
-python3 plotAveragedResults.py -protocol=WLFS -out_format=svg -sampling=100
+#python3 plotAveragedResults.py -protocol=STET -out_format=svg -sampling=100
+#python3 plotAveragedResults.py -protocol=WTET -out_format=svg -sampling=100
+#python3 plotAveragedResults.py -protocol=SLFS -out_format=svg -sampling=100
+#python3 plotAveragedResults.py -protocol=WLFS -out_format=svg -sampling=100
