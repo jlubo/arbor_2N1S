@@ -1,4 +1,8 @@
 *.png
+!arbor_averaged_STET.png
+!arbor_averaged_SLFS.png
+!arbor_averaged_WTET.png
+!arbor_averaged_WLFS.png
 *.txt
 *.so
 *.bak

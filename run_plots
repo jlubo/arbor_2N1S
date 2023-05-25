@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# set environment variables required to run custom Arbor installation
+source set_arbor_env
+
+# number of trials
+num_trials=100
+
+# run plotting procedure
+for (( i=1; i <= $num_trials; ++i ))
+do
+    python3 ./plotResults.py -learn=STET -trial=$i -data_saving=1
+	python3 ./plotResults.py -learn=WTET -trial=$i -data_saving=1
+	python3 ./plotResults.py -learn=SLFS -trial=$i -data_saving=1
+	python3 ./plotResults.py -learn=WLFS -trial=$i -data_saving=1
+done
+

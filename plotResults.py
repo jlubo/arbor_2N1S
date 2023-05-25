@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import json
+import argparse
 import os
 	
 #####################################
@@ -34,7 +35,7 @@ def plotResults(config, data_stacked, trial = 0, mem_dyn_data = False, store_pat
 	
 	# plot data for plasticity dynamics
 	axes[0].plot(data_stacked[:,0], data_stacked[:,data_ptr]/h_0*100, color="#800000", label='h', marker='None', zorder=10)
-	axes[0].plot(data_stacked[:,0], (data_stacked[:,data_ptr+1]+1)*100, color="#1f77b4", label='z', marker='None', zorder=9)
+	axes[0].plot(data_stacked[:,0], (data_stacked[:,data_ptr+1]/h_0+1)*100, color="#1f77b4", label='z', marker='None', zorder=9)
 	axes[0].axhline(y=(config["synapses"]["syn_exc_calcium_plasticity"]["theta_pro"]/h_0+1)*100, label='Protein thresh.', linestyle='-.', color="#dddddd", zorder=5)
 	axes[0].axhline(y=(config["synapses"]["syn_exc_calcium_plasticity"]["theta_tag"]/h_0+1)*100, label='Tag thresh.', linestyle='dashed', color="#dddddd", zorder=4)
 	
@@ -75,9 +76,20 @@ def plotResults(config, data_stacked, trial = 0, mem_dyn_data = False, store_pat
 	
 #####################################
 if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-trial', type=int, default=0, help="number of the current trial")
+	parser.add_argument('-learn', default="predefined", help="protocol for the learning stimulus")
+	parser.add_argument('-data_saving', type=int, choices=[0, 1], default=0, help="switch for recording fewer data")
+	args = parser.parse_args()
+
 	config = json.load(open("config_arbor_2N1S.json", "r"))
 	
-	os.chdir("traces_predef/")
-	data_stacked = np.loadtxt(f'arbor_2N1S_0_traces.txt')
+	os.chdir(f"data_{args.learn}/")
+	data_stacked = np.loadtxt(f"arbor_2N1S_{args.trial}_traces.txt")
 	
-	plotResults(config, data_stacked, mem_dyn_data = True, figure_fmt = 'svg')
+	if not args.data_saving:
+		plotResults(config, data_stacked, trial = args.trial, mem_dyn_data = True, figure_fmt = 'svg')
+	else:
+		plotResults(config, data_stacked, trial = args.trial, mem_dyn_data = False, figure_fmt = 'png')
+
+	os.chdir("../")
