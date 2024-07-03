@@ -179,7 +179,7 @@ class SingleRecipe(arbor.recipe):
 				# average number of spikes (random number drawn for every timestep, then filtered with probability):
 				stimulus_times_exc = np.array([])
 				rng = np.random.default_rng(seed)
-				num_timesteps = np.int_(np.round_((t_end[0]-t_start[0])*1000./self.dt))
+				num_timesteps = np.int_(np.round((t_end[0]-t_start[0])*1000./self.dt))
 				for i in range(len(t_start)):
 					spike_mask = rng.random(size=num_timesteps) < freq*self.dt/1000.
 					timestep_values = np.linspace(t_start[i]*1000, t_end[i]*1000, num=num_timesteps, endpoint=False)
@@ -196,7 +196,7 @@ class SingleRecipe(arbor.recipe):
 				
 				# average number of spikes (random number drawn for every timestep, then filtered with probability):
 				rng = np.random.default_rng(seed)
-				num_timesteps = np.int_(np.round_((t_end-t_start)*1000./self.dt))
+				num_timesteps = np.int_(np.round((t_end-t_start)*1000./self.dt))
 				spike_mask = rng.random(size=num_timesteps) < freq*self.dt/1000.
 				timestep_values = np.linspace(t_start*1000, t_end*1000, num=num_timesteps, endpoint=False)
 				stimulus_times_exc = timestep_values[spike_mask]	
@@ -212,7 +212,7 @@ class SingleRecipe(arbor.recipe):
 				# average number of spikes (random number drawn for every timestep, then filtered with probability):
 				stimulus_times_exc = np.array([])
 				rng = np.random.default_rng(seed)
-				num_timesteps = np.int_(np.round_((t_end[0]-t_start[0])*1000./self.dt))
+				num_timesteps = np.int_(np.round((t_end[0]-t_start[0])*1000./self.dt))
 				for i in range(len(t_start)):
 					spike_mask = rng.random(size=num_timesteps) < freq*self.dt/1000.
 					timestep_values = np.linspace(t_start[i]*1000, t_end[i]*1000, num=num_timesteps, endpoint=False)
@@ -229,7 +229,7 @@ class SingleRecipe(arbor.recipe):
 					                     
 				# average number of spikes (random number drawn for every timestep, then filtered with probability):
 				rng = np.random.default_rng(seed)
-				num_timesteps = np.int_(np.round_((t_end-t_start)*1000./self.dt))
+				num_timesteps = np.int_(np.round((t_end-t_start)*1000./self.dt))
 				spike_mask = rng.random(size=num_timesteps) < freq*self.dt/1000.
 				timestep_values = np.linspace(t_start*1000, t_end*1000, num=num_timesteps, endpoint=False)
 				stimulus_times_exc = timestep_values[spike_mask]			

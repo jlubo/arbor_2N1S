@@ -32,3 +32,16 @@ SLFS:
 
 WLFS:
 ![Weak low-frequency stimulation inducing early-phase LTD](arbor_averaged_WLFS.png)
+
+### Arbor installation
+The code has been tested with Arbor version v0.9.1-dev, state of commit [2f4c325](https://github.com/arbor-sim/arbor/commit/2f4c32598d37f9852978c76952b0a09aeb84385b).
+
+To install this Arbor version from source code (with SIMD support), you can run the following:
+```
+git clone --recursive https://github.com/arbor-sim/arbor/ arbor_source_repo
+mkdir arbor_source_repo/build && cd arbor_source_repo/build
+git checkout 2f4c32598d37f9852978c76952b0a09aeb84385b -b plastic_arbor_v1
+cmake -DARB_WITH_PYTHON=ON -DARB_USE_BUNDLED_LIBS=ON -DARB_VECTORIZE=ON -DCMAKE_INSTALL_PREFIX=$(readlink -f ~/arbor_v0.9.1-dev-plastic_arbor_v1-simd) -DPYTHON_EXECUTABLE:FILEPATH=`which python3.10` -S .. -B .
+#make tests && ./bin/unit # optionally: testing
+make install
+```
