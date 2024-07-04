@@ -301,7 +301,7 @@ def arbor2N1S(trial, learn_prot, runtime, config_file, data_saving):
 		rseed = int(t0*10000) # clock seed
 	print("Random seed " + str(rseed))
 
-	context = arbor.context() # constructs a local context with one thread, no GPU, no MPI (cf. https://docs.arbor-sim.org/en/v0.5.2/python/hardware.html#arbor.context)
+	context = arbor.context(threads=1) # constructs a local context with one thread, no GPU, no MPI (cf. https://docs.arbor-sim.org/en/v0.5.2/python/hardware.html#arbor.context)
 	domains = arbor.partition_load_balance(recipe, context) # constructs a domain_decomposition that distributes the cells in the model described by an arbor.recipe over the distributed and local hardware resources described by an arbor.context (cf. https://docs.arbor-sim.org/en/v0.5.2/python/domdec.html#arbor.partition_load_balance)
 	sim = arbor.simulation(recipe, context, domains, seed = rseed)
 

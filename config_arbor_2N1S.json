@@ -13,7 +13,7 @@
 		"C_mem" : 1e-9,
 		"I_0" : 0,
 		"t_ref" : 2.0,
-		"radius" : 1e-10
+		"radius" : 1e-3
 	},
 	"synapses" : {
 		"syn_exc_calcium_plasticity" : {
